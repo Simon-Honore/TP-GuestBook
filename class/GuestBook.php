@@ -29,8 +29,7 @@ class GuestBook
     $content = trim(file_get_contents($this->filename));
     $lines = explode(PHP_EOL, $content);
     foreach ($lines as $line) {
-      $data = json_decode($line, true);
-      $messages[] = new Message($data['username'], $data['message'], new DateTime('@' . $data['date']));
+      $messages[] = Message::fromJSON($line);
     }
     return array_reverse($messages);
   }
