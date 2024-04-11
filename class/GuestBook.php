@@ -22,4 +22,16 @@ class GuestBook
   {
     file_put_contents($this->filename, $message->toJSON() . PHP_EOL, FILE_APPEND);
   }
+
+  public function getMessages(): array
+  {
+    $messages = [];
+    $content = trim(file_get_contents($this->filename));
+    $lines = explode(PHP_EOL, $content);
+    foreach ($lines as $line) {
+      $data = json_decode($line, true);
+      $messages[] = new Message($data['username'], $data['message'], new DateTime('@' . $data['date']));
+    }
+    return $messages;
+  }
 }

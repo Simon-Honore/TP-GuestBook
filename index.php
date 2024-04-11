@@ -4,11 +4,11 @@ require_once 'class/GuestBook.php';
 
 $errors = null;
 $success = false;
+$guestbook = new GuestBook(__DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'messages');
 
 if (isset($_POST['username'], $_POST['message'])) {
   $message = new Message($_POST['username'], $_POST['message']);
   if ($message->isValid()) {
-    $guestbook = new GuestBook(__DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'messages');
     $guestbook->addMessage($message);
     $success = true;
     $_POST = [];
@@ -17,6 +17,7 @@ if (isset($_POST['username'], $_POST['message'])) {
   }
 }
 
+$messages = $guestbook->getMessages();
 $title = "Livre d'or";
 require 'elements/header.php';
 ?>
@@ -49,7 +50,7 @@ require 'elements/header.php';
 
     <div class="mb-3">
       <label for="message" class="form-label">Message</label>
-      <textarea class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?> " id="message" name="message"><?= htmlentities($_POST['message'] ?? '') ?></textarea>
+      <textarea class="form-control <?= isset($errors['message']) ? 'is-invalid' : '' ?> " id="message" name="message"><?= htmlentities($_POST['message'] ?? '') ?></textarea>
       <?php if (isset($errors['message'])) : ?>
         <div class="invalid-feedback">
           <?= $errors['message'] ?>
@@ -58,6 +59,17 @@ require 'elements/header.php';
     </div>
     <button type="submit" class="btn btn-primary">Valider</button>
   </form>
+
+  <?php if (!empty($messages)) : ?>
+    <div class="mt-3">
+      <h2>Messages</h2>
+
+      <?php foreach ($messages as $message) : ?>
+        <?= $message->toHTML(); ?>
+      <?php endforeach ?>
+
+    </div>
+  <?php endif ?>
 </div>
 
 <?php require 'elements/footer.php'; ?>

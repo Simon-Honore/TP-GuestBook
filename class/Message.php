@@ -1,4 +1,5 @@
 <?php
+
 class Message
 {
 
@@ -33,6 +34,20 @@ class Message
     }
 
     return $errors;
+  }
+
+  public function toHTML(): string
+  {
+    $username = htmlentities($this->username);
+    $message = htmlentities($this->message);
+    $date = $this->date->setTimezone(new DateTimeZone("Europe/Paris"))->format('d/m/Y à H:i');
+
+    return <<<HTML
+      <p>
+          <strong>{$username}</strong> <em>le {$date}</em><br>
+          {$message}
+      </p>
+    HTML;
   }
 
   public function toJSON(): string
