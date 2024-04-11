@@ -27,7 +27,7 @@ require 'elements/header.php';
   <form action="" method="post">
     <div class="mb-3">
       <label for="username" class="form-label">Pseudo</label>
-      <input type="text" class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?> " id="username" name="username" />
+      <input type="text" value="<?= htmlentities($_POST['username']) ?? '' ?>" class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?> " id="username" name="username" />
       <?php if (isset($errors['username'])) : ?>
         <div class="invalid-feedback">
           <?= $errors['username'] ?>
@@ -37,7 +37,7 @@ require 'elements/header.php';
 
     <div class="mb-3">
       <label for="message" class="form-label">Message</label>
-      <textarea class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?> " id="message" name="message"></textarea>
+      <textarea class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?> " id="message" name="message"><?= htmlentities($_POST['message']) ?? '' ?></textarea>
       <?php if (isset($errors['message'])) : ?>
         <div class="invalid-feedback">
           <?= $errors['message'] ?>
