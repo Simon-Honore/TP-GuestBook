@@ -45,7 +45,7 @@ class Message
   public function toHTML(): string
   {
     $username = htmlentities($this->username);
-    $message = htmlentities($this->message);
+    $message = nl2br(htmlentities($this->message));
     $date = $this->date->setTimezone(new DateTimeZone("Europe/Paris"))->format('d/m/Y à H:i');
 
     return <<<HTML
